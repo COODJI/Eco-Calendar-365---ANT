@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Calendar 365 - Votre calendrier écologique annuel</title>
+    <meta name="description"
+        content="365 actions écologiques quotidiennes pour transformer vos habitudes et sauver la planète, un jour à la fois.">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/month-modal.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2d6a4f">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header nav-fixed">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" onclick="goToToday()" style="cursor: pointer;">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L4 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-8-5z"
+                            fill="currentColor" />
+                        <path d="M12 8v8M8 12h8" stroke="white" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <h1>Eco Calendar 365</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#hero" class="nav-link" onclick="goToToday(); return false;">Accueil</a>
+                    <a href="#calendar" class="nav-link">Calendrier</a>
+                    <a href="#progress" class="nav-link">Ma Progression</a>
+                    <a href="#about" class="nav-link">À propos</a>
+                </nav>
+                <div class="header-actions">
+                    <button id="darkModeToggle" class="btn btn-ghost" title="Changer le mode de luminosité">
+                        <span class="mode-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="seasonalHero">
+        <div class="seasonal-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">365 jours pour la planète</span>
+                <h2 class="hero-title">Transformez vos habitudes,<br>un jour à la fois</h2>
+                <p class="hero-description">
+                    Découvrez chaque jour une action écologique simple, concrète et mesurable.
+                    Basé sur des données scientifiques validées par l'ADEME, le GIEC et l'ONU.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" onclick="scrollToCalendar()">
+                        Commencer aujourd'hui
+                    </button>
+                    <button class="btn btn-secondary" onclick="showAbout()">
+                        En savoir plus
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="totalUsers">12,847</span>
+                        <span class="stat-label">Éco-citoyens actifs</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalActions">487,392</span>
+                        <span class="stat-label">Actions réalisées</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="totalCO2">2,341</span>
+                        <span class="stat-label">Tonnes de CO₂ évitées</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Month Theme -->
+    <section class="current-theme" id="currentTheme">
+        <div class="container">
+            <div class="theme-card">
+                <div class="theme-header">
+                    <span class="theme-badge" id="themeBadge">Janvier 2026</span>
+                    <h3 class="theme-title" id="themeTitle">⚡ Énergie & Chauffage</h3>
+                </div>
+                <p class="theme-description" id="themeDescription">
+                    Ce mois-ci, focus sur la réduction de notre consommation énergétique.
+                    Chaque geste compte pour diminuer notre empreinte carbone et nos factures.
+                </p>
+                <div class="theme-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Votre progression ce mois</span>
+                        <span class="progress-value" id="monthProgress">0/31</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="monthProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="level-progress">
+                    <div class="progress-header">
+                        <span class="progress-label" id="currentLevel">Niveau 1</span>
+                        <span class="progress-value">Prochain niveau</span>
+                    </div>
+                    <div class="progress-bar xp">
+                        <div class="progress-fill xp" id="xpProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" onclick="showMonthDetails()">
+                    Voir le programme du mois
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Today's Action -->
+    <section class="today-action" id="todayAction">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" id="actionSectionTitle">🌱 Action du jour</h2>
+                <p class="section-subtitle" id="actionSectionSubtitle">Mardi 21 janvier 2026 - Jour 21/365</p>
+            </div>
+
+            <div class="action-card" id="actionCard">
+                <div class="action-card-main">
+                    <div class="action-icon-container">
+                        <div class="action-icon" id="actionIcon">💡</div>
+                    </div>
+
+                    <div class="action-main-content">
+                        <div class="action-meta">
+                            <span class="action-difficulty" id="actionDifficulty">Facile</span>
+                            <span class="action-time" id="actionTime">5 min</span>
+                        </div>
+                        <h3 class="action-title" id="actionTitle">Baissez votre chauffage de 1°C</h3>
+                    </div>
+
+                    <button class="btn-toggle-round" id="toggleActionBtn" onclick="toggleTodayAction()"
+                        title="Voir plus de détails">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="actionExpandable" class="action-details-container collapsed">
+                    <div class="action-details-inner">
+                        <div class="action-section">
+                            <h4 class="action-subtitle">🎯 L'action</h4>
+                            <p id="actionDescription">...</p>
+                        </div>
+
+                        <div class="action-section">
+                            <h4 class="action-subtitle">💡 Pourquoi c'est important</h4>
+                            <p id="actionWhy">...</p>
+                        </div>
+
+                        <div class="action-impact">
+                            <div class="impact-card">
+                                <span class="impact-icon">🌍</span>
+                                <div class="impact-content">
+                                    <span class="impact-value" id="impactValue">-300 kg</span>
+                                    <span class="impact-label">CO₂/an</span>
+                                </div>
+                            </div>
+                            <div class="impact-card">
+                                <span class="impact-icon">💰</span>
+                                <div class="impact-content">
+                                    <span class="impact-value" id="savingsValue">~100€</span>
+                                    <span class="impact-label">Économies/an</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-section">
+                            <h4 class="action-subtitle">📊 Le saviez-vous ?</h4>
+                            <p id="actionFact">...</p>
+                            <a href="#" class="action-source" id="actionSource">Source: ADEME 2024</a>
+                        </div>
+
+                        <div class="action-tips">
+                            <h4 class="action-subtitle">💡 Astuces bonus</h4>
+                            <ul id="actionTips"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-footer">
+                    <button class="btn btn-primary btn-large" onclick="completeAction()">
+                        ✓ J'ai réalisé cette action
+                    </button>
+                    <button class="btn btn-ghost" onclick="shareAction()">
+                        Partager
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendar Grid -->
+    <section class="calendar-section" id="calendar">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">📅 Calendrier de janvier</h2>
+                <div class="month-selector">
+                    <button class="month-nav" onclick="previousMonth()" aria-label="Mois précédent">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="current-month-container">
+                        <span class="current-month" id="currentMonth">Janvier 2026</span>
+                        <button id="backToToday" class="btn-mini" onclick="goToToday()">Aujourd'hui</button>
+                    </div>
+                    <button class="month-nav" onclick="nextMonth()" aria-label="Mois suivant">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section class="progress-section" id="progress">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">🏆 Votre progression</h2>
+                <button class="btn btn-primary" onclick="shareImpact()">
+                    📢 Partager ma réussite
+                </button>
+            </div>
+
+            <div class="progress-cards">
+                <div class="progress-card">
+                    <div class="progress-card-icon">🔥</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="streakDays">0</span>
+                        <span class="progress-card-label">Jours consécutifs</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-card-icon">✅</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="totalCompleted">0</span>
+                        <span class="progress-card-label">Actions réalisées</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-card-icon">🌍</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="totalImpact">0 kg</span>
+                        <span class="progress-card-label">CO₂ évité</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-card-icon">🐬</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="totalWater">0 L</span>
+                        <span class="progress-card-label">Eau économisée</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-card-icon">💰</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="totalMoney">0 €</span>
+                        <span class="progress-card-label">Argent économisé</span>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-card-icon">🎯</div>
+                    <div class="progress-card-content">
+                        <span class="progress-card-value" id="completionRate">0%</span>
+                        <span class="progress-card-label">Taux de réussite</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-visualization">
+                <div class="chart-container">
+                    <h3 class="subsection-title">📉 Évolution du CO₂ (ce mois)</h3>
+                    <div id="impactChart" class="impact-chart">
+                        <!-- SVG injecté par JS -->
+                    </div>
+                </div>
+
+                <div class="equivalencies-panel">
+                    <h3 class="subsection-title">🌳 Équivalence d'impact</h3>
+                    <div class="equivalencies-grid">
+                        <div class="eq-item">
+                            <span class="eq-icon">🌳</span>
+                            <div class="eq-content">
+                                <span class="eq-value" id="eqTrees">0</span>
+                                <span class="eq-label">Arbres absorbant ce CO₂/an</span>
+                            </div>
+                        </div>
+                        <div class="eq-item">
+                            <span class="eq-icon">🚗</span>
+                            <div class="eq-content">
+                                <span class="eq-value" id="eqKm">0 km</span>
+                                <span class="eq-label">Équivalent trajet voiture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="badges-section">
+                <h3 class="subsection-title">🏅 Badges débloqués</h3>
+                <div class="badges-grid" id="badgesGrid">
+                    <!-- Generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Eco Calendar 365</h4>
+                    <p>365 actions pour un avenir durable</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Ressources</h4>
+                    <a href="#">ADEME</a>
+                    <a href="#">GIEC</a>
+                    <a href="#">ONU Environnement</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Légal</h4>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Politique de confidentialité</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Eco Calendar 365. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Partage -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeShareModal()">&times;</span>
+            <h3 class="modal-title">Partager mon impact 📢</h3>
+            <p id="shareTextPreview" class="share-preview"></p>
+            <div class="share-options">
+                <button class="btn btn-whatsapp" onclick="shareToWhatsApp()">
+                    WhatsApp
+                </button>
+                <button class="btn btn-instagram" onclick="shareToInstagram()">
+                    Instagram (Copier)
+                </button>
+                <button id="webShareBtn" class="btn btn-primary" onclick="useWebShare()">
+                    Autre...
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale Programme du Mois -->
+    <div class="month-modal-overlay" id="monthModal">
+        <div class="month-modal">
+            <div class="month-modal-header">
+                <h2 class="month-modal-title" id="monthModalTitle">
+                    <span id="monthModalIcon"></span>
+                    <span id="monthModalName"></span>
+                </h2>
+                <p class="month-modal-subtitle" id="monthModalDescription"></p>
+                <div class="month-modal-goal" id="monthModalGoal"></div>
+                <button class="month-modal-close" onclick="closeMonthModal()" aria-label="Fermer">×</button>
+            </div>
+            <div class="month-modal-body">
+                <h3 class="month-modal-section-title">Actions du mois</h3>
+                <div class="month-actions-list" id="monthActionsList">
+                    <!-- Les actions seront générées dynamiquement par JavaScript -->
+                </div>
+            </div>
+            <div class="month-modal-footer">
+                <div class="month-modal-stats">
+                    Progression : <strong id="monthModalProgress">0/31</strong>
+                </div>
+                <div class="month-modal-progress">
+                    <div class="month-modal-progress-bar">
+                        <div class="month-modal-progress-fill" id="monthModalProgressBar" style="width: 0%"></div>
+                    </div>
+                    <span id="monthModalPercent">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/pwa-functions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
