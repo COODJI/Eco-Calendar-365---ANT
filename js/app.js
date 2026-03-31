@@ -469,6 +469,13 @@ function generateCalendar() {
         currentMonthElement.textContent = getMonthName(appState.viewMonth) + ' ' + appState.viewYear;
     }
 
+    // Mettre à jour le titre de la section calendrier (h2)
+    const calendarSectionTitle = document.getElementById('calendarSectionTitle');
+    if (calendarSectionTitle) {
+        calendarSectionTitle.textContent = '📅 Calendrier de ' + getMonthName(appState.viewMonth).toLowerCase();
+    }
+
+
     // Cacher/Afficher le bouton "Retour à aujourd'hui"
     const backToToday = document.getElementById('backToToday');
     const now = new Date();
